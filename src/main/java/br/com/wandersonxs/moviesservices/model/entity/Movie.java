@@ -1,4 +1,4 @@
-package br.com.wandersonxs.moviesservices.repository;
+package br.com.wandersonxs.moviesservices.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,7 +17,6 @@ public class Movie {
     private String title;
     private String studio;
     private String producer;
-
     @Column(name ="movie_year")
     private Integer year;
     private boolean winner;
