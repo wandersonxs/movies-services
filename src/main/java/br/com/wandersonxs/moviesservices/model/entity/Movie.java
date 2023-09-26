@@ -27,7 +27,6 @@ public class Movie {
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "producer_id")
     )
-
     private List<Producer> producers;
 
     @Column(name ="movie_year")

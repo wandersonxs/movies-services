@@ -18,6 +18,9 @@ public class Producer {
     private Long id;
     private String name;
 
-    @ManyToMany(mappedBy = "producers")
+    @ManyToMany(mappedBy = "producers",
+            cascade = {
+                    CascadeType.PERSIST
+            })
     private List<Movie> movies;
 }

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProducerDTO {
+public class ProducerWinnerResponseDTO {
 
     private String producer;
     private Integer interval;
