@@ -2,8 +2,8 @@ package br.com.wandersonxs.moviesservices.service.impl;
 
 import br.com.wandersonxs.moviesservices.converter.ListStringToProducersConverter;
 import br.com.wandersonxs.moviesservices.helper.FileHelper;
-import br.com.wandersonxs.moviesservices.model.dto.response.ProducerDTO;
-import br.com.wandersonxs.moviesservices.model.dto.response.ProducerResponseDTO;
+import br.com.wandersonxs.moviesservices.model.dto.response.ProducerWinnerResponseDTO;
+import br.com.wandersonxs.moviesservices.model.dto.response.ProducersWinnersResponseDTO;
 import br.com.wandersonxs.moviesservices.model.entity.Movie;
 import br.com.wandersonxs.moviesservices.model.entity.Producer;
 import br.com.wandersonxs.moviesservices.repository.ProducerRepository;
@@ -27,7 +27,6 @@ public class ProducerServiceImpl implements ProducerService {
     public List<Producer> saveAll(List<String> linhasCsv) {
         List<String> rawProducers = fileHelper.getRawProducers(linhasCsv);
         List<Producer> producers = listStringToProducersConverter.convert(rawProducers);
-        assert producers != null;
         return producerRepository.saveAll(producers);
     }
 
@@ -37,9 +36,9 @@ public class ProducerServiceImpl implements ProducerService {
     }
 
     @Override
-    public ProducerResponseDTO getWinnersMoreThanOnce() {
+    public ProducersWinnersResponseDTO getWinnersMoreThanOnce() {
 
-        List<ProducerDTO> producerDTOS = new ArrayList<>();
+        List<ProducerWinnerResponseDTO> producerDTOS = new ArrayList<>();
         List<Producer> producers = producerRepository.findByWinnersMoreThanOnce();
 
         for (Producer producer : producers) {
@@ -51,11 +50,11 @@ public class ProducerServiceImpl implements ProducerService {
                 Movie movieNext = i + 1 < movies.size() ? movies.get(i + 1) : null;
 
                 if (movieNext != null) {
-                    ProducerDTO movieResponseDTO = new ProducerDTO(producer.getName(), movieNext.getYear() - movieCurrent.getYear(), movieCurrent.getYear(), movieNext.getYear());
+                    ProducerWinnerResponseDTO movieResponseDTO = new ProducerWinnerResponseDTO(producer.getName(), movieNext.getYear() - movieCurrent.getYear(), movieCurrent.getYear(), movieNext.getYear());
                     producerDTOS.add(movieResponseDTO);
 
                 } else {
-                    ProducerDTO movieResponseDTO = new ProducerDTO(producer.getName(), null, movieCurrent.getYear(), null);
+                    ProducerWinnerResponseDTO movieResponseDTO = new ProducerWinnerResponseDTO(producer.getName(), null, movieCurrent.getYear(), null);
                     producerDTOS.add(movieResponseDTO);
                 }
 
@@ -64,20 +63,31 @@ public class ProducerServiceImpl implements ProducerService {
         return buildProducerResponseDTO(producerDTOS);
     }
 
-    private ProducerResponseDTO buildProducerResponseDTO(List<ProducerDTO> movieDTOS) {
-        ProducerResponseDTO movieResponseDTO = new ProducerResponseDTO();
+    private ProducersWinnersResponseDTO buildProducerResponseDTO(List<ProducerWinnerResponseDTO> movieDTOS) {
+        ProducersWinnersResponseDTO movieResponseDTO = new ProducersWinnersResponseDTO();
+        List<ProducerWinnerResponseDTO> producersDTOMin = new ArrayList<>();
+        List<ProducerWinnerResponseDTO> producersDTOMax = new ArrayList<>();
 
-        List<String> producers = movieDTOS.stream().map(ProducerDTO::getProducer).distinct().toList();
-
-        producers.forEach(n -> {
-            ProducerDTO movieDTO = movieDTOS.stream().filter(k -> k.getProducer().equals(n) && k.getInterval() != null).min(Comparator.comparing(ProducerDTO::getInterval)).get();
-            movieResponseDTO.getMin().add(movieDTO);
-        });
+        List<String> producers = movieDTOS.stream().map(ProducerWinnerResponseDTO::getProducer).distinct().toList();
 
         producers.forEach(n -> {
-            ProducerDTO movieDTO = movieDTOS.stream().filter(k -> k.getProducer().equals(n) && k.getInterval() != null).max(Comparator.comparing(ProducerDTO::getInterval)).get();
-            movieResponseDTO.getMax().add(movieDTO);
+
+            // TODO: PEGAR SOMENTE ATÉ O SEGUNDO PREMIO
+//            ProducerDTO movieDTOMin = movieDTOS.stream().filter(k -> k.getProducer().equals(n) && k.getInterval() != null).min(Comparator.comparing(ProducerDTO::getInterval)).get();
+//            producersDTOMin.add(movieDTOMin);
+
+            List<ProducerWinnerResponseDTO> teste = movieDTOS.stream().filter(k -> k.getProducer().equals(n) && k.getInterval() != null).limit(2).toList();
+
+//            ProducerDTO movieDTOMin = movieDTOS.stream().filter(k -> k.getProducer().equals(n) && k.getInterval() != null).limit(2).min(Comparator.comparing(ProducerDTO::getInterval)).get();
+            ProducerWinnerResponseDTO movieDTOMin = movieDTOS.stream().filter(k -> k.getProducer().equals(n) && k.getInterval() != null).findFirst().get();
+            producersDTOMin.add(movieDTOMin);
+
+            ProducerWinnerResponseDTO movieDTOMax = movieDTOS.stream().filter(k -> k.getProducer().equals(n) && k.getInterval() != null).max(Comparator.comparing(ProducerWinnerResponseDTO::getInterval)).get();
+            producersDTOMax.add(movieDTOMax);
         });
+
+        movieResponseDTO.setMin(producersDTOMin.stream().sorted(Comparator.comparing(ProducerWinnerResponseDTO::getInterval)).toList());
+        movieResponseDTO.setMax(producersDTOMax.stream().sorted(Comparator.comparing(ProducerWinnerResponseDTO::getInterval).reversed()).toList());
 
         return movieResponseDTO;
     }

@@ -1,18 +1,19 @@
-package br.com.wandersonxs.moviesservices.model.dto.response;
+package br.com.wandersonxs.moviesservices.model.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
-
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ProducerResponseDTO {
+public class ProducerRequestDTO {
 
     private Long id;
     private String name;

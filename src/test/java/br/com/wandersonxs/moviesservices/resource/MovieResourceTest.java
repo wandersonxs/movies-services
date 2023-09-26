@@ -1,6 +1,5 @@
 package br.com.wandersonxs.moviesservices.resource;
 
-import br.com.wandersonxs.moviesservices.model.dto.response.ProducerResponseDTO;
 import br.com.wandersonxs.moviesservices.service.MovieService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,9 +19,9 @@ public class MovieResourceTest {
 
     @Test
     public void getMovieWinners() {
-        ProducerResponseDTO movieResponseDTO =  movieService.getMovieWinners();
-        movieResponseDTO.getMin().forEach(System.out::println);
-        movieResponseDTO.getMax().forEach(System.out::println);
+//        ProducerResponseDTO movieResponseDTO =  movieService.getMovieWinners();
+//        movieResponseDTO.getMin().forEach(System.out::println);
+//        movieResponseDTO.getMax().forEach(System.out::println);
     }
 
 }

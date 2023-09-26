@@ -7,8 +7,8 @@
 | $$ \/  | $$|  $$$$$$/   \  $/    /$$$$$$| $$$$$$$$|  $$$$$$/      |  $$$$$$/| $$$$$$$$| $$  | $$   \  $/    /$$$$$$|  $$$$$$/| $$$$$$$$|  $$$$$$/
 |__/     |__/ \______/     \_/    |______/|________/ \______/        \______/ |________/|__/  |__/    \_/    |______/ \______/ |________/ \______/
 
-Version: ${application.version}
-Developed by ${application.developer}
+Version: ${application.api.version}
+Developed by ${application.api.developer}
 
 
                                                                                                                                                    
