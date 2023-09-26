@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MovieDTO {
+public class ProducerDTO {
 
     private String producer;
     private Integer interval;

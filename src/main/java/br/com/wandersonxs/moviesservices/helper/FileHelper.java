@@ -24,6 +24,7 @@ public class FileHelper {
 
             while (line != null) {
                 line = bufferedReader.readLine();
+
                 if (line != null) {
                     lines.add(line);
                 }
@@ -34,5 +35,39 @@ public class FileHelper {
         }
         return lines;
     }
+
+    public List<String> getRawProducers(List<String> lines) {
+
+        List<String> rawProducers = new ArrayList<>();
+
+        for (String line : lines) {
+            String[] raw = line.split(";");
+            String[] rawProducer = raw[3].split(",");
+            for (int i = 0; i < rawProducer.length; i++) {
+
+                String producer = rawProducer[i].trim();
+                producer = producer.replace("and ", "");
+                rawProducers.add(producer);
+            }
+        }
+        return rawProducers.stream().distinct().toList();
+    }
+
+    public List<String> getRawProducers(String line) {
+
+        List<String> rawProducers = new ArrayList<>();
+
+        String[] raw = line.split(";");
+        String[] rawProducer = raw[3].split(",");
+        for (int i = 0; i < rawProducer.length; i++) {
+
+            String producer = rawProducer[i].trim();
+            producer = producer.replace("and ", "");
+            rawProducers.add(producer);
+        }
+
+        return rawProducers.stream().distinct().toList();
+    }
+
 
 }

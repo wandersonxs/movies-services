@@ -10,9 +10,9 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MovieResponseDTO {
+public class ProducerResponseDTO {
 
-   List<MovieDTO> min = new ArrayList<>();
-   List<MovieDTO> max = new ArrayList<>();
+   List<ProducerDTO> min = new ArrayList<>();
+   List<ProducerDTO> max = new ArrayList<>();
 
 }
