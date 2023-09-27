@@ -1,7 +1,12 @@
 package br.com.wandersonxs.moviesservices.service.impl;
 
-import br.com.wandersonxs.moviesservices.converter.ListStringToProducersConverter;
+import br.com.wandersonxs.moviesservices.converter.*;
+import br.com.wandersonxs.moviesservices.handler.exception.BusinessException;
+import br.com.wandersonxs.moviesservices.handler.exception.NotFoundException;
 import br.com.wandersonxs.moviesservices.helper.FileHelper;
+import br.com.wandersonxs.moviesservices.model.dto.criteria.ProducerCriteriaDTO;
+import br.com.wandersonxs.moviesservices.model.dto.request.ProducerRequestDTO;
+import br.com.wandersonxs.moviesservices.model.dto.response.ProducerResponseDTO;
 import br.com.wandersonxs.moviesservices.model.dto.response.ProducerWinnerResponseDTO;
 import br.com.wandersonxs.moviesservices.model.dto.response.ProducersWinnersResponseDTO;
 import br.com.wandersonxs.moviesservices.model.entity.Movie;
@@ -9,6 +14,8 @@ import br.com.wandersonxs.moviesservices.model.entity.Producer;
 import br.com.wandersonxs.moviesservices.repository.ProducerRepository;
 import br.com.wandersonxs.moviesservices.service.ProducerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,11 +29,15 @@ public class ProducerServiceImpl implements ProducerService {
     private final ProducerRepository producerRepository;
     private final FileHelper fileHelper;
     private final ListStringToProducersConverter listStringToProducersConverter;
+    private final PageProducerToPageProducerResponseDTOConverter pageProducerToPageProducerResponseDTOConverter;
+    private final ProducerRequestDTOToProducerConverter producerRequestDTOToProducerConverter;
+    private final ProducerToProducerResponseDTOConverter producerToProducerResponseDTOConverter;
 
     @Override
     public List<Producer> saveAll(List<String> linhasCsv) {
-        List<String> rawProducers = fileHelper.getRawProducers(linhasCsv);
+        List<String> rawProducers = fileHelper.getRawProducers(linhasCsv).stream().filter(n -> !"".equals(n)).toList();
         List<Producer> producers = listStringToProducersConverter.convert(rawProducers);
+        listStringToProducersConverter.convert(rawProducers);
         return producerRepository.saveAll(producers);
     }
 
@@ -61,6 +72,42 @@ public class ProducerServiceImpl implements ProducerService {
             }
         }
         return buildProducerResponseDTO(producerDTOS);
+    }
+
+    @Override
+    public Page<ProducerResponseDTO> getProducers(ProducerCriteriaDTO producerCriteriaDTO, Pageable page) throws NotFoundException {
+        Page<Producer> producers = producerRepository.findByLikeSearch(producerCriteriaDTO.getName(), page);
+        if (producers.isEmpty()) throw new NotFoundException();
+        return pageProducerToPageProducerResponseDTOConverter.convert(producers);
+    }
+
+    @Override
+    public void deleteProducer(Long id) throws NotFoundException, BusinessException {
+
+        Producer producer = producerRepository.findById(id).orElseThrow(NotFoundException::new);
+        if (producer.getMovies().size() > 0) {
+            throw new BusinessException("Producer has movies bound to it. Delete the association of movies before deleting producer.");
+        }
+        producerRepository.deleteById(id);
+
+    }
+
+    @Override
+    public ProducerResponseDTO getProducerById(Long id) throws NotFoundException {
+        Producer producer = producerRepository.findById(id).orElseThrow(NotFoundException::new);
+        return producerToProducerResponseDTOConverter.convert(producer);
+    }
+
+    @Override
+    public ProducerResponseDTO saveProducer(Long id, ProducerRequestDTO producerRequestDTO) throws NotFoundException {
+        Producer producer = producerRequestDTOToProducerConverter.convert(producerRequestDTO);
+
+        if (id != null) {
+            producerRepository.findById(id).orElseThrow(NotFoundException::new);
+            producer.setId(id);
+        }
+
+        return producerToProducerResponseDTOConverter.convert(producerRepository.save(producer));
     }
 
     private ProducersWinnersResponseDTO buildProducerResponseDTO(List<ProducerWinnerResponseDTO> movieDTOS) {

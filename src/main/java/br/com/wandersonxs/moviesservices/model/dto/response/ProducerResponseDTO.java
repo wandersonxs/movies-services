@@ -16,5 +16,6 @@ public class ProducerResponseDTO {
 
     private Long id;
     private String name;
+    private List<MovieResponseDTO> movies;
 
 }

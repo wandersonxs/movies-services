@@ -6,9 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import javax.validation.Valid;
-import java.util.List;
-
 
 @Getter
 @Setter
@@ -21,17 +18,8 @@ public class ApiError<T> {
     @JsonProperty("httpStatus")
     private Integer httpStatus = null;
 
-    @JsonProperty("errorCode")
-    private Integer errorCode = null;
-
     @JsonProperty("message")
     private T message = null;
 
-    @JsonProperty("details")
 
-    @Valid
-    private List<Object> details = null;
-
-    @JsonProperty("traceId")
-    private String traceId = null;
 }

@@ -1,6 +1,8 @@
 package br.com.wandersonxs.moviesservices.repository;
 
 import br.com.wandersonxs.moviesservices.model.entity.Producer;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -18,4 +20,8 @@ public interface ProducerRepository extends JpaRepository<Producer, Long> {
             " having count(*) > 1 ", nativeQuery = true)
     List<Producer> findByWinnersMoreThanOnce();
 
+    @Query(value = "select p.id, p.name from producer p " +
+            " where " +
+            " (upper(p.name) like UPPER('%'||:name||'%') or :name is null) " , nativeQuery = true)
+    Page<Producer> findByLikeSearch(String name, Pageable page);
 }
