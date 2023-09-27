@@ -34,11 +34,11 @@ public class ProducerServiceImpl implements ProducerService {
     private final ProducerToProducerResponseDTOConverter producerToProducerResponseDTOConverter;
 
     @Override
-    public List<Producer> saveAll(List<String> linhasCsv) {
+    public void saveAll(List<String> linhasCsv) {
         List<String> rawProducers = fileHelper.getRawProducers(linhasCsv).stream().filter(n -> !"".equals(n)).toList();
         List<Producer> producers = listStringToProducersConverter.convert(rawProducers);
         listStringToProducersConverter.convert(rawProducers);
-        return producerRepository.saveAll(producers);
+        producerRepository.saveAll(producers);
     }
 
     @Override
@@ -119,13 +119,8 @@ public class ProducerServiceImpl implements ProducerService {
 
         producers.forEach(n -> {
 
-            // TODO: PEGAR SOMENTE ATÉ O SEGUNDO PREMIO
-//            ProducerDTO movieDTOMin = movieDTOS.stream().filter(k -> k.getProducer().equals(n) && k.getInterval() != null).min(Comparator.comparing(ProducerDTO::getInterval)).get();
-//            producersDTOMin.add(movieDTOMin);
-
             List<ProducerWinnerResponseDTO> teste = movieDTOS.stream().filter(k -> k.getProducer().equals(n) && k.getInterval() != null).limit(2).toList();
 
-//            ProducerDTO movieDTOMin = movieDTOS.stream().filter(k -> k.getProducer().equals(n) && k.getInterval() != null).limit(2).min(Comparator.comparing(ProducerDTO::getInterval)).get();
             ProducerWinnerResponseDTO movieDTOMin = movieDTOS.stream().filter(k -> k.getProducer().equals(n) && k.getInterval() != null).findFirst().get();
             producersDTOMin.add(movieDTOMin);
 

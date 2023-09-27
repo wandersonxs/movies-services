@@ -13,13 +13,13 @@ import lombok.experimental.SuperBuilder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiError<T> {
     @JsonProperty("timestamp")
-    private String timestamp = null;
+    private String timestamp;
 
     @JsonProperty("httpStatus")
-    private Integer httpStatus = null;
+    private Integer httpStatus;
 
     @JsonProperty("message")
-    private T message = null;
+    private T message;
 
 
 }

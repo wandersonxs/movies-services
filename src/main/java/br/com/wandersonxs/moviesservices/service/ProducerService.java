@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface ProducerService {
 
-    List<Producer> saveAll(List<String> producers);
+    void saveAll(List<String> producers);
 
     List<Producer> findByNameIn(List<String> names);
 

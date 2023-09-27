@@ -1,6 +1,5 @@
 package br.com.wandersonxs.moviesservices.handler.exception;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
