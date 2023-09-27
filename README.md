@@ -78,3 +78,15 @@ mvn test -Dtest="ProducerResourceTest"
 ```
 mvn test -Dtest="MovieResourceTest"
 ```
+
+3.2 - To test the ProducerWinnerTest class, a special class test just to test the scenarios of producers winners.
+
+```
+mvn test -Dtest="ProducerResourceTest"
+```
+
+3.3 - To test the MovieResourcetest class, which has the movies CRUD endpoints.
+
+```
+mvn test -Dtest="ProducerWinnerTest"
+
