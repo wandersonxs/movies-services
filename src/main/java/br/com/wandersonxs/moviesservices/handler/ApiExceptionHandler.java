@@ -11,7 +11,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.sql.Timestamp;
-import java.util.Collections;
 import java.util.Date;
 
 @ControllerAdvice
@@ -25,8 +24,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .timestamp(new Timestamp(new Date().getTime()).toString())
                 .httpStatus(HttpStatus.BAD_REQUEST.value())
                 .message(ex.getMessage())
-                .details(Collections.singletonList(request.getDescription(false)))
-                .traceId(request.getHeader("trace_id")).build();
+                .build();
         return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
     }
 
@@ -44,8 +42,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .timestamp(new Timestamp(new Date().getTime()).toString())
                 .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .message(ex.getMessage())
-                .details(Collections.singletonList(request.getDescription(false)))
-                .traceId(request.getHeader("trace_id")).build();
+                .build();
         return new ResponseEntity<>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

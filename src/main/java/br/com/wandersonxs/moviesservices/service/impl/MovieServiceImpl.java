@@ -64,8 +64,12 @@ public class MovieServiceImpl implements MovieService {
         List<Movie> movies = new ArrayList<>();
 
         for (String lineMovie : linesMovies) {
+
             Movie movie = stringToMovieConverter.convert(lineMovie);
-            movies.add(movie);
+
+            if(movie.getProducers() != null && movie.getProducers().size() > 0){
+                movies.add(movie);
+            }
         }
 
         return movieRepository.saveAll(movies);

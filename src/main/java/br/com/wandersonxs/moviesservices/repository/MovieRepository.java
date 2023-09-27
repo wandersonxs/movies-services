@@ -14,7 +14,6 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
             " inner join movie_producer mp on p.id = mp.producer_id " +
             " inner join movie m on mp.movie_id = m.id " +
             " where " +
-//            " (m.id = :id or :id = -1)  and " +
             " (upper(m.title) like UPPER('%'||:title||'%') or :title is null)  and " +
             " (upper(m.studio) like UPPER('%'||:studio||'%') or :studio is null)  and " +
             " (p.id in (:producersId) or :producersId is null) and " +
