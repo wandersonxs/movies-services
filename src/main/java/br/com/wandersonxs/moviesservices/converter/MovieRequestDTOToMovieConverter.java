@@ -1,7 +1,6 @@
 package br.com.wandersonxs.moviesservices.converter;
 
 import br.com.wandersonxs.moviesservices.model.dto.request.MovieRequestDTO;
-import br.com.wandersonxs.moviesservices.model.dto.response.MovieResponseDTO;
 import br.com.wandersonxs.moviesservices.model.entity.Movie;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;

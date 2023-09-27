@@ -2,10 +2,8 @@ package br.com.wandersonxs.moviesservices.resource;
 
 import br.com.wandersonxs.moviesservices.handler.exception.BusinessException;
 import br.com.wandersonxs.moviesservices.handler.exception.NotFoundException;
-import br.com.wandersonxs.moviesservices.model.dto.criteria.MovieCriteriaDTO;
 import br.com.wandersonxs.moviesservices.model.dto.criteria.ProducerCriteriaDTO;
 import br.com.wandersonxs.moviesservices.model.dto.request.ProducerRequestDTO;
-import br.com.wandersonxs.moviesservices.model.dto.response.MovieResponseDTO;
 import br.com.wandersonxs.moviesservices.model.dto.response.ProducerResponseDTO;
 import br.com.wandersonxs.moviesservices.model.dto.response.ProducersWinnersResponseDTO;
 import br.com.wandersonxs.moviesservices.resource.api.ProducersApi;
@@ -17,8 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -43,13 +39,13 @@ public class ProducerResource implements ProducersApi {
     }
 
     @Override
-    public ResponseEntity<ProducerResponseDTO> addProducer(ProducerRequestDTO producerRequestDTO) throws BusinessException, NotFoundException {
-        return new ResponseEntity(producerService.saveProducer(null, producerRequestDTO), HttpStatus.CREATED);
+    public ResponseEntity<ProducerResponseDTO> addProducer(ProducerRequestDTO producerRequestDTO) throws NotFoundException {
+        return new ResponseEntity<>(producerService.saveProducer(null, producerRequestDTO), HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<ProducerResponseDTO> updateProducer(Long id, ProducerRequestDTO producerRequestDTO) throws NotFoundException, BusinessException {
-        return new ResponseEntity(producerService.saveProducer(id, producerRequestDTO), HttpStatus.OK);
+    public ResponseEntity<ProducerResponseDTO> updateProducer(Long id, ProducerRequestDTO producerRequestDTO) throws NotFoundException {
+        return new ResponseEntity<>(producerService.saveProducer(id, producerRequestDTO), HttpStatus.OK);
     }
 
     @Override

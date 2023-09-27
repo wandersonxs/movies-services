@@ -53,7 +53,7 @@ public interface ProducersApi {
             produces = MediaType.APPLICATION_JSON_VALUE,
             method = RequestMethod.GET)
     ResponseEntity<Page<ProducerResponseDTO>> getProducers(
-            @Parameter(in = ParameterIn.QUERY, description = "", schema = @Schema()) @Valid @RequestParam(value = "name", required = false) String name,
+            @Parameter(in = ParameterIn.QUERY, description = "Producer's name", schema = @Schema()) @Valid @RequestParam(value = "name", required = false) String name,
             Pageable page) throws NotFoundException;
 
     @Operation(summary = "Get producers by id", description = "Get producers by id", tags = {"producers"})
@@ -80,7 +80,7 @@ public interface ProducersApi {
             consumes = {"application/json"},
             method = RequestMethod.POST)
     ResponseEntity<ProducerResponseDTO> addProducer(
-            @Parameter(in = ParameterIn.DEFAULT, description = "", required = true, schema = @Schema()) @Valid @RequestBody ProducerRequestDTO producerRequestDTO) throws BusinessException, NotFoundException;
+            @Parameter(in = ParameterIn.DEFAULT, description = "Producer's data", required = true, schema = @Schema()) @Valid @RequestBody ProducerRequestDTO producerRequestDTO) throws NotFoundException;
 
     @Operation(summary = "Update producer", description = "Update producer", tags = {"producers"})
     @ApiResponses(value = {
@@ -94,7 +94,7 @@ public interface ProducersApi {
             method = RequestMethod.PUT)
     ResponseEntity<ProducerResponseDTO> updateProducer(
             @Parameter(in = ParameterIn.PATH, description = "Producer id", required = true, schema = @Schema()) @PathVariable("id") Long id,
-            @Parameter(in = ParameterIn.DEFAULT, description = "", required = true, schema = @Schema()) @Valid @RequestBody ProducerRequestDTO producerRequestDTO) throws NotFoundException, BusinessException;
+            @Parameter(in = ParameterIn.DEFAULT, description = "Producer's id", required = true, schema = @Schema()) @Valid @RequestBody ProducerRequestDTO producerRequestDTO) throws NotFoundException;
 
 
     @Operation(summary = "Delete producer", description = "Delete producer", tags = {"producers"})

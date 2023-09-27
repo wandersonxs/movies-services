@@ -5,7 +5,6 @@ import br.com.wandersonxs.moviesservices.model.dto.response.MovieResponseDTO;
 import br.com.wandersonxs.moviesservices.model.entity.Movie;
 import br.com.wandersonxs.moviesservices.repository.MovieRepository;
 import br.com.wandersonxs.moviesservices.repository.ProducerRepository;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -91,7 +90,7 @@ public class MovieResourceTest {
                   "title": "Final Countdown 4",
                   "studio": "Warner Bros.",
                   "producers": [
-                    { 
+                    {
                       "name": "Roberval Magnésio Joseca"
                     }
                   ],

@@ -4,8 +4,12 @@ import br.com.wandersonxs.moviesservices.handler.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -25,8 +29,8 @@ public class FileHelper {
         List<String> lines = new ArrayList<>();
 
         try (Reader reader = new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream(filename)))) {
-            BufferedReader bufferedReader = new BufferedReader(reader);
 
+            BufferedReader bufferedReader = new BufferedReader(reader);
             String line = bufferedReader.readLine();
 
             if (!HEADER.equalsIgnoreCase(line.trim())) {
@@ -36,10 +40,7 @@ public class FileHelper {
 
             while (line != null) {
                 line = bufferedReader.readLine();
-
-                if (line != null) {
-                    lines.add(line);
-                }
+                if (line != null) lines.add(line);
             }
 
         } catch (IOException | NullPointerException ex) {
@@ -64,19 +65,9 @@ public class FileHelper {
     }
 
     private List<String> getProducers(String line) {
-        List<String> rawProducers = new ArrayList<>();
-
         String[] lineRaw = line.split(CSV_COLUMN_SPLITTER);
-
         String[] rawProducer = lineRaw[COLUMN_PRODUCER].split(PRODUCERS_SPLITTER);
-
-        for (int i = 0; i < rawProducer.length; i++) {
-            String producer = rawProducer[i].trim();
-            producer = producer.replace(PRODUCERS_COMMON_CONJUNCTION, EMPTY);
-            rawProducers.add(producer);
-        }
-
-        return rawProducers;
+        return Arrays.stream(rawProducer).map(n -> n.trim()).map(n -> n.replace(PRODUCERS_COMMON_CONJUNCTION, EMPTY)).toList();
     }
 
 }

@@ -2,7 +2,6 @@ package br.com.wandersonxs.moviesservices.model.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 

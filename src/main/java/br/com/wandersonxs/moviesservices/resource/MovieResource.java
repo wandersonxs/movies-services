@@ -1,6 +1,5 @@
 package br.com.wandersonxs.moviesservices.resource;
 
-import br.com.wandersonxs.moviesservices.handler.exception.BusinessException;
 import br.com.wandersonxs.moviesservices.handler.exception.NotFoundException;
 import br.com.wandersonxs.moviesservices.model.dto.criteria.MovieCriteriaDTO;
 import br.com.wandersonxs.moviesservices.model.dto.request.MovieRequestDTO;
@@ -34,17 +33,17 @@ public class MovieResource implements MoviesApi {
     }
 
     @Override
-    public ResponseEntity<MovieResponseDTO> addMovie(MovieRequestDTO movieRequestDTO) throws BusinessException, NotFoundException {
-        return new ResponseEntity(movieService.saveMovie(null, movieRequestDTO), HttpStatus.CREATED);
+    public ResponseEntity<MovieResponseDTO> addMovie(MovieRequestDTO movieRequestDTO) throws NotFoundException {
+        return new ResponseEntity<>(movieService.saveMovie(null, movieRequestDTO), HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<MovieResponseDTO> updateMovie(Long id, MovieRequestDTO movieRequestDTO) throws NotFoundException, BusinessException {
+    public ResponseEntity<MovieResponseDTO> updateMovie(Long id, MovieRequestDTO movieRequestDTO) throws NotFoundException {
         return ResponseEntity.ok(movieService.saveMovie(id, movieRequestDTO));
     }
 
     @Override
-    public void deleteMovie(Long id) throws NotFoundException, BusinessException {
+    public void deleteMovie(Long id) throws NotFoundException {
         movieService.deleteMovie(id);
     }
 

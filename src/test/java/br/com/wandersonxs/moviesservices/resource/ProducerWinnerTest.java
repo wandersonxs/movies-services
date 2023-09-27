@@ -1,8 +1,6 @@
 package br.com.wandersonxs.moviesservices.resource;
 
 import br.com.wandersonxs.moviesservices.bootstrap.Bootstrap;
-import br.com.wandersonxs.moviesservices.model.dto.response.ProducerResponseDTO;
-import br.com.wandersonxs.moviesservices.model.entity.Producer;
 import br.com.wandersonxs.moviesservices.repository.MovieRepository;
 import br.com.wandersonxs.moviesservices.repository.ProducerRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,12 +17,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.List;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)

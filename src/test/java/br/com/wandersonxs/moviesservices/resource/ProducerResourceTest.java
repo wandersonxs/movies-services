@@ -1,7 +1,6 @@
 package br.com.wandersonxs.moviesservices.resource;
 
 import br.com.wandersonxs.moviesservices.bootstrap.Bootstrap;
-import br.com.wandersonxs.moviesservices.model.dto.response.MovieResponseDTO;
 import br.com.wandersonxs.moviesservices.model.dto.response.ProducerResponseDTO;
 import br.com.wandersonxs.moviesservices.model.entity.Producer;
 import br.com.wandersonxs.moviesservices.repository.MovieRepository;

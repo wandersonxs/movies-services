@@ -9,12 +9,10 @@ import br.com.wandersonxs.moviesservices.model.dto.criteria.MovieCriteriaDTO;
 import br.com.wandersonxs.moviesservices.model.dto.request.MovieRequestDTO;
 import br.com.wandersonxs.moviesservices.model.dto.response.MovieResponseDTO;
 import br.com.wandersonxs.moviesservices.model.entity.Movie;
-import br.com.wandersonxs.moviesservices.model.entity.Producer;
 import br.com.wandersonxs.moviesservices.repository.MovieRepository;
 import br.com.wandersonxs.moviesservices.repository.ProducerRepository;
 import br.com.wandersonxs.moviesservices.service.MovieService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -59,7 +56,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<Movie> saveAll(List<String> linesMovies) {
+    public void saveAll(List<String> linesMovies) {
 
         List<Movie> movies = new ArrayList<>();
 
@@ -72,7 +69,7 @@ public class MovieServiceImpl implements MovieService {
             }
         }
 
-        return movieRepository.saveAll(movies);
+        movieRepository.saveAll(movies);
     }
 
     @Override

@@ -39,10 +39,10 @@ public interface MoviesApi {
             produces = MediaType.APPLICATION_JSON_VALUE,
             method = RequestMethod.GET)
     ResponseEntity<Page<MovieResponseDTO>> getMovies(
-            @Parameter(in = ParameterIn.QUERY, description = "", schema = @Schema()) @Valid @RequestParam(value = "title", required = false) String title,
-            @Parameter(in = ParameterIn.QUERY, description = "", schema = @Schema()) @Valid @RequestParam(value = "studio", required = false) String studio,
-            @Parameter(in = ParameterIn.QUERY, description = "", schema = @Schema()) @Valid @RequestParam(value = "year", required = false) Integer year,
-            @Parameter(in = ParameterIn.QUERY, description = "", schema = @Schema()) @Valid @RequestParam(value = "winner", required = false) Boolean winner,
+            @Parameter(in = ParameterIn.QUERY, description = "Movie's title", schema = @Schema()) @Valid @RequestParam(value = "title", required = false) String title,
+            @Parameter(in = ParameterIn.QUERY, description = "Movie's studio", schema = @Schema()) @Valid @RequestParam(value = "studio", required = false) String studio,
+            @Parameter(in = ParameterIn.QUERY, description = "Movie's year", schema = @Schema()) @Valid @RequestParam(value = "year", required = false) Integer year,
+            @Parameter(in = ParameterIn.QUERY, description = "Movie's winner", schema = @Schema()) @Valid @RequestParam(value = "winner", required = false) Boolean winner,
             Pageable page) throws NotFoundException;
 
     @Operation(summary = "Get movies by id", description = "Get movies by id", tags = {"movies"})
@@ -69,7 +69,7 @@ public interface MoviesApi {
             consumes = {"application/json"},
             method = RequestMethod.POST)
     ResponseEntity<MovieResponseDTO> addMovie(
-            @Parameter(in = ParameterIn.DEFAULT, description = "", required = true, schema = @Schema()) @Valid @RequestBody MovieRequestDTO movieRequestDTO) throws BusinessException, NotFoundException;
+            @Parameter(in = ParameterIn.DEFAULT, description = "Movie's data", required = true, schema = @Schema()) @Valid @RequestBody MovieRequestDTO movieRequestDTO) throws NotFoundException;
 
     @Operation(summary = "Update movie", description = "Update movie", tags = {"movies"})
     @ApiResponses(value = {
@@ -83,7 +83,7 @@ public interface MoviesApi {
             method = RequestMethod.PUT)
     ResponseEntity<MovieResponseDTO> updateMovie(
             @Parameter(in = ParameterIn.PATH, description = "Movie id", required = true, schema = @Schema()) @PathVariable("id") Long id,
-            @Parameter(in = ParameterIn.DEFAULT, description = "", required = true, schema = @Schema()) @Valid @RequestBody MovieRequestDTO movieRequestDTO) throws NotFoundException, BusinessException;
+            @Parameter(in = ParameterIn.DEFAULT, description = "Movie's id", required = true, schema = @Schema()) @Valid @RequestBody MovieRequestDTO movieRequestDTO) throws NotFoundException;
 
 
     @Operation(summary = "Delete movie", description = "Delete movie", tags = {"movies"})
@@ -96,7 +96,7 @@ public interface MoviesApi {
             produces = {"*/*"},
             method = RequestMethod.DELETE)
     void deleteMovie(
-            @Parameter(in = ParameterIn.PATH, description = "Movie id", required = true, schema = @Schema()) @PathVariable("id") Long id) throws NotFoundException, BusinessException;
+            @Parameter(in = ParameterIn.PATH, description = "Movie id", required = true, schema = @Schema()) @PathVariable("id") Long id) throws NotFoundException;
 
 
 }
