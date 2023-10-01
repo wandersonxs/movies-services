@@ -110,27 +110,24 @@ public class ProducerServiceImpl implements ProducerService {
         return producerToProducerResponseDTOConverter.convert(producerRepository.save(producer));
     }
 
-    private ProducersWinnersResponseDTO buildProducerResponseDTO(List<ProducerWinnerResponseDTO> movieDTOS) {
-        ProducersWinnersResponseDTO movieResponseDTO = new ProducersWinnersResponseDTO();
+    private ProducersWinnersResponseDTO buildProducerResponseDTO(List<ProducerWinnerResponseDTO> producerWinnerResponseDTOS) {
+
         List<ProducerWinnerResponseDTO> producersDTOMin = new ArrayList<>();
         List<ProducerWinnerResponseDTO> producersDTOMax = new ArrayList<>();
 
-        List<String> producers = movieDTOS.stream().map(ProducerWinnerResponseDTO::getProducer).distinct().toList();
+        List<String> producers = producerWinnerResponseDTOS.stream().map(ProducerWinnerResponseDTO::getProducer).distinct().toList();
 
         producers.forEach(n -> {
 
-            List<ProducerWinnerResponseDTO> teste = movieDTOS.stream().filter(k -> k.getProducer().equals(n) && k.getInterval() != null).limit(2).toList();
+            ProducerWinnerResponseDTO producerWinnerResponseDTOMin = producerWinnerResponseDTOS.stream().filter(k -> k.getProducer().equals(n) && k.getInterval() != null).findFirst().get();
+            producersDTOMin.add(producerWinnerResponseDTOMin);
 
-            ProducerWinnerResponseDTO movieDTOMin = movieDTOS.stream().filter(k -> k.getProducer().equals(n) && k.getInterval() != null).findFirst().get();
-            producersDTOMin.add(movieDTOMin);
-
-            ProducerWinnerResponseDTO movieDTOMax = movieDTOS.stream().filter(k -> k.getProducer().equals(n) && k.getInterval() != null).max(Comparator.comparing(ProducerWinnerResponseDTO::getInterval)).get();
-            producersDTOMax.add(movieDTOMax);
+            ProducerWinnerResponseDTO producerWinnerResponseDTOMax = producerWinnerResponseDTOS.stream().filter(k -> k.getProducer().equals(n) && k.getInterval() != null).max(Comparator.comparing(ProducerWinnerResponseDTO::getInterval)).get();
+            producersDTOMax.add(producerWinnerResponseDTOMax);
         });
 
-        movieResponseDTO.setMin(producersDTOMin.stream().sorted(Comparator.comparing(ProducerWinnerResponseDTO::getInterval)).toList());
-        movieResponseDTO.setMax(producersDTOMax.stream().sorted(Comparator.comparing(ProducerWinnerResponseDTO::getInterval).reversed()).toList());
+        return new ProducersWinnersResponseDTO(List.of(producersDTOMin.stream().min(Comparator.comparing(ProducerWinnerResponseDTO::getInterval)).get()),
+                List.of(producersDTOMax.stream().max(Comparator.comparing(ProducerWinnerResponseDTO::getInterval)).get()));
 
-        return movieResponseDTO;
     }
 }

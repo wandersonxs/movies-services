@@ -37,17 +37,27 @@ git clone https://github.com/wandersonxs/movies-services
 
 2 - Go to the project folder.
 
-3 - Run command:
+3 - Run command to get default csv file from resources:
 
 ```
 mvn spring-boot:run
 ```
 
+3.1 - Or run command specifying a csv file outside resources
+
+```
+mvn spring-boot:run -Dspring-boot.run.arguments=path_filename.csv
+
+Example:
+
+mvn spring-boot:run -Dspring-boot.run.arguments=/Users/wanderson/movielist_02.csv
+``` 
+
 This will run the api on port 8080.
 
-5 - Access the swagger through http://localhost:8080/swagger-ui/index.html
+4 - Access the swagger through http://localhost:8080/swagger-ui/index.html
 
-6 - At swagger you have all the endpoints and payloads to test
+5 - At swagger you have all the endpoints and payloads to test
 
 ## How to run the integration tests 
 

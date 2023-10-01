@@ -39,7 +39,7 @@ public class BootstrapTest {
         movieRepository.deleteAll();
         producerRepository.deleteAll();
 
-        bootstrap.loadInitialDatabase(csvFilename);
+        bootstrap.loadInitialDatabase(csvFilename,false);
 
         List<Movie> movies = movieRepository.findAll();
         List<Producer> producers = producerRepository.findAll();
@@ -47,7 +47,7 @@ public class BootstrapTest {
         assertThat(movies).isNotNull();
         assertThat(producers).isNotNull();
         assertThat(movies.size()).isEqualTo(206);
-        assertThat(producers.size()).isEqualTo(300);
+        assertThat(producers.size()).isEqualTo(367);
 
     }
 
@@ -58,7 +58,7 @@ public class BootstrapTest {
         final String csvFilename = "/csv/file_not_exist.csv";
 
         try {
-            bootstrap.loadInitialDatabase(csvFilename);
+            bootstrap.loadInitialDatabase(csvFilename, false);
         } catch (Exception ex) {
             assertThat(ex.getMessage()).isEqualTo("File not found or error on file reading.");
             return;
@@ -75,7 +75,7 @@ public class BootstrapTest {
         final String csvFilename = "/csv/movielist_invalid_structure.csv";
 
         try {
-            bootstrap.loadInitialDatabase(csvFilename);
+            bootstrap.loadInitialDatabase(csvFilename, false);
         } catch (Exception ex) {
             assertThat(ex.getMessage()).isEqualTo("Csv structure not valid. Please, check it out and try again.");
             return;
@@ -94,7 +94,7 @@ public class BootstrapTest {
             movieRepository.deleteAll();
             producerRepository.deleteAll();
 
-            bootstrap.loadInitialDatabase(csvFilename);
+            bootstrap.loadInitialDatabase(csvFilename, false);
 
             List<Movie> movies = movieRepository.findAll();
             List<Producer> producers = producerRepository.findAll();
