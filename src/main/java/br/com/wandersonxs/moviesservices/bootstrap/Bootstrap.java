@@ -24,11 +24,12 @@ public class Bootstrap implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        loadInitialDatabase(args.getSourceArgs().length > 0 ? args.getSourceArgs()[0] : CSV_FILENAME_DEFAULT);
+        boolean isFilenamePathOutResource = args.getSourceArgs() != null && args.getSourceArgs().length > 0;
+        loadInitialDatabase(args.getSourceArgs().length > 0 ? args.getSourceArgs()[0] : CSV_FILENAME_DEFAULT, isFilenamePathOutResource);
     }
 
-    public void loadInitialDatabase(String fileNamePath) throws Exception {
-        List<String> linhasCsv = fileHelper.readLinesCsv(fileNamePath);
+    public void loadInitialDatabase(String fileNamePath, boolean isFilenamePathOutResource) throws Exception {
+        List<String> linhasCsv = fileHelper.readLinesCsv(fileNamePath, isFilenamePathOutResource);
         producerService.saveAll(linhasCsv);
         movieService.saveAll(linhasCsv);
     }

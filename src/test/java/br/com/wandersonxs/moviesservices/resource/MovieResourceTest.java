@@ -50,7 +50,7 @@ public class MovieResourceTest {
     private void cleanAndLoadDatabase(String filename) throws Exception {
         movieRepository.deleteAll();
         producerRepository.deleteAll();
-        bootstrap.loadInitialDatabase(filename);
+        bootstrap.loadInitialDatabase(filename, false);
     }
 
     @DisplayName("Add Movie")

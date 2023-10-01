@@ -51,7 +51,7 @@ public class ProducerResourceTest {
     private void cleanAndLoadDatabase(String filename) throws Exception {
         movieRepository.deleteAll();
         producerRepository.deleteAll();
-        bootstrap.loadInitialDatabase(filename);
+        bootstrap.loadInitialDatabase(filename, false);
     }
 
     @Test
@@ -60,63 +60,21 @@ public class ProducerResourceTest {
 
         cleanAndLoadDatabase("/csv/movielist.csv");
 
-        String bodyResponseExpected = """
-                {
-                    "min": [
-                        {
-                            "producer": "Bo Derek",
-                            "interval": 6,
-                            "previousWin": 1984,
-                            "followingWin": 1990
-                        },
-                        {
-                            "producer": "Matthew Vaughn",
-                            "interval": 13,
-                            "previousWin": 2002,
-                            "followingWin": 2015
-                        }
-                    ],
-                    "max": [
-                        {
-                            "producer": "Matthew Vaughn",
-                            "interval": 13,
-                            "previousWin": 2002,
-                            "followingWin": 2015
-                        },
-                        {
-                            "producer": "Bo Derek",
-                            "interval": 6,
-                            "previousWin": 1984,
-                            "followingWin": 1990
-                        }
-                    ]
-                }
-                """;
-
         ResultActions response = mockMvc.perform(get(PRODUCER_BASE_URL + "/movies/winners")
                         .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print()).andExpect(status().isOk());
 
         // Check the faster producer winner of two prizes
-        response.andExpect(MockMvcResultMatchers.jsonPath("$.min[0].producer", CoreMatchers.is("Bo Derek")));
-        response.andExpect(MockMvcResultMatchers.jsonPath("$.min[0].interval", CoreMatchers.is(6)));
-        response.andExpect(MockMvcResultMatchers.jsonPath("$.min[0].previousWin", CoreMatchers.is(1984)));
-        response.andExpect(MockMvcResultMatchers.jsonPath("$.min[0].followingWin", CoreMatchers.is(1990)));
-
-        response.andExpect(MockMvcResultMatchers.jsonPath("$.min[1].producer", CoreMatchers.is("Matthew Vaughn")));
-        response.andExpect(MockMvcResultMatchers.jsonPath("$.min[1].interval", CoreMatchers.is(13)));
-        response.andExpect(MockMvcResultMatchers.jsonPath("$.min[1].previousWin", CoreMatchers.is(2002)));
-        response.andExpect(MockMvcResultMatchers.jsonPath("$.min[1].followingWin", CoreMatchers.is(2015)));
+        response.andExpect(MockMvcResultMatchers.jsonPath("$.min[0].producer", CoreMatchers.is("Joel Silver")));
+        response.andExpect(MockMvcResultMatchers.jsonPath("$.min[0].interval", CoreMatchers.is(1)));
+        response.andExpect(MockMvcResultMatchers.jsonPath("$.min[0].previousWin", CoreMatchers.is(1990)));
+        response.andExpect(MockMvcResultMatchers.jsonPath("$.min[0].followingWin", CoreMatchers.is(1991)));
 
         // Check the producers with the longest interval of consecutive prizes
         response.andExpect(MockMvcResultMatchers.jsonPath("$.max[0].producer", CoreMatchers.is("Matthew Vaughn")));
         response.andExpect(MockMvcResultMatchers.jsonPath("$.max[0].interval", CoreMatchers.is(13)));
         response.andExpect(MockMvcResultMatchers.jsonPath("$.max[0].previousWin", CoreMatchers.is(2002)));
         response.andExpect(MockMvcResultMatchers.jsonPath("$.max[0].followingWin", CoreMatchers.is(2015)));
-
-        response.andExpect(MockMvcResultMatchers.jsonPath("$.max[1].producer", CoreMatchers.is("Bo Derek")));
-        response.andExpect(MockMvcResultMatchers.jsonPath("$.max[1].interval", CoreMatchers.is(6)));
-        response.andExpect(MockMvcResultMatchers.jsonPath("$.max[1].previousWin", CoreMatchers.is(1984)));
 
     }
 

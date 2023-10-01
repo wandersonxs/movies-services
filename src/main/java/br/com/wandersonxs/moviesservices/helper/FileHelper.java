@@ -5,9 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,16 +21,16 @@ public class FileHelper {
     private static final Integer COLUMN_PRODUCER = 3;
     private static final String CSV_COLUMN_SPLITTER = ";";
     private static final String PRODUCERS_SPLITTER = ",";
-    private static final String PRODUCERS_COMMON_CONJUNCTION = "and ";
+    private static final String PRODUCERS_COMMON_CONJUNCTION = "and";
     private static final String EMPTY = "";
     private static final String HEADER = "year;title;studios;producers;winner";
 
-    public List<String> readLinesCsv(String filename) throws Exception {
+    public List<String> readLinesCsv(String filename, boolean isFilenamePathOutResource) throws Exception {
 
         List<String> lines = new ArrayList<>();
 
-        try (Reader reader = new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream(filename)))) {
-
+        try (var reader = isFilenamePathOutResource ? new BufferedReader(new InputStreamReader(new FileInputStream(filename), StandardCharsets.UTF_8)) :
+                new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream(filename)))) {
             BufferedReader bufferedReader = new BufferedReader(reader);
             String line = bufferedReader.readLine();
 
@@ -43,7 +44,8 @@ public class FileHelper {
                 if (line != null) lines.add(line);
             }
 
-        } catch (IOException | NullPointerException ex) {
+        } catch (IOException |
+                 NullPointerException ex) {
             log.error("File not found or error on file reading.", ex);
             throw new BusinessException("File not found or error on file reading.");
         }
@@ -65,9 +67,11 @@ public class FileHelper {
     }
 
     private List<String> getProducers(String line) {
+
         String[] lineRaw = line.split(CSV_COLUMN_SPLITTER);
-        String[] rawProducer = lineRaw[COLUMN_PRODUCER].split(PRODUCERS_SPLITTER);
-        return Arrays.stream(rawProducer).map(n -> n.trim()).map(n -> n.replace(PRODUCERS_COMMON_CONJUNCTION, EMPTY)).toList();
+        String[] rawProducer = lineRaw[COLUMN_PRODUCER].replace(PRODUCERS_COMMON_CONJUNCTION, PRODUCERS_SPLITTER).split(PRODUCERS_SPLITTER);
+
+        return Arrays.stream(rawProducer).map(String::trim).map(n -> n.replace(PRODUCERS_COMMON_CONJUNCTION, EMPTY)).toList();
     }
 
 }
